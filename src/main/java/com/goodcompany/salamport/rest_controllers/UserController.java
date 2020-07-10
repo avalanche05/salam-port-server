@@ -82,8 +82,9 @@ public class UserController {
 
         User user = userRepository.findByEmail(confirmCode.getEmail());
         if(user == null){
-            return new User();
+            return new User(confirmCode.getEmail());
         }
         return user;
     }
+
 }
