@@ -1,6 +1,5 @@
 package com.goodcompany.salamport.rest_controllers;
 
-import com.goodcompany.salamport.models.ConfirmCode;
 import com.goodcompany.salamport.repository.ConfirmCodeRepository;
 import com.goodcompany.salamport.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 import java.util.Random;
-import java.util.UUID;
 
 @RestController
 public class UserController {
@@ -44,15 +42,15 @@ public class UserController {
         try {
             // отправляем владельцу на электронную почту письмо
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("хуй"));
+            message.setFrom(new InternetAddress("salam.port.plus@gmail.com"));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(email));
-            message.setSubject("Подтверждение электронной почты");
+            message.setSubject("Код для входа в приложение");
             // генерируем случайный токен
             int confirmCode;
             while(true){
                 confirmCode = new Random().nextInt((999999-100000)+1)-100000;
-                if(!confirmCodeRepository.existsByConfirmCode(confirmCode))
+                if(!confirmCodeRepository.existsByCode(confirmCode))
                     break;
             }
 
