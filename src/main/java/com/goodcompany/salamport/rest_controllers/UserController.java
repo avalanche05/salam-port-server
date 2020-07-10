@@ -1,9 +1,12 @@
 package com.goodcompany.salamport.rest_controllers;
 
+import com.goodcompany.salamport.models.ConfirmCode;
+import com.goodcompany.salamport.models.User;
 import com.goodcompany.salamport.repository.ConfirmCodeRepository;
 import com.goodcompany.salamport.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.*;
@@ -22,7 +25,7 @@ public class UserController {
     private ConfirmCodeRepository confirmCodeRepository;
 
     @PostMapping("user/login")
-    public boolean loginUser(String email){
+    public boolean loginUser(@RequestParam String email){
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -54,6 +57,8 @@ public class UserController {
                     break;
             }
 
+            confirmCodeRepository.save(new ConfirmCode(confirmCode,email));
+
             message.setText("Добро пожаловать!" +
                     "\n\n Код для входа в приложение: " + confirmCode);
             Transport.send(message);
@@ -63,5 +68,22 @@ public class UserController {
             return false;
         }
 
+    }
+
+    @PostMapping("user/code")
+    public User userCode(@RequestParam int code){
+        ConfirmCode confirmCode = confirmCodeRepository.findByCone(code);
+
+        if(confirmCode == null){
+            return null;
+        }
+
+//        confirmCodeRepository.delete(confirmCode);
+
+        User user = userRepository.findByEmail(confirmCode.getEmail());
+        if(user == null){
+            return new User();
+        }
+        return user;
     }
 }
