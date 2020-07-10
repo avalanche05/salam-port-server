@@ -72,7 +72,7 @@ public class UserController {
 
     @PostMapping("user/code")
     public User userCode(@RequestParam int code){
-        ConfirmCode confirmCode = confirmCodeRepository.findByCone(code);
+        ConfirmCode confirmCode = confirmCodeRepository.findByCode(code);
 
         if(confirmCode == null){
             return null;
