@@ -15,6 +15,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @RestController
 public class UserController {
@@ -53,7 +54,7 @@ public class UserController {
             // генерируем случайный токен
             int confirmCode;
             while(true){
-                confirmCode = new Random().nextInt((999999-100000)+1)-100000;
+                confirmCode = ThreadLocalRandom.current().nextInt(100000,999999+1);
                 if(!confirmCodeRepository.existsByCode(confirmCode))
                     break;
             }
@@ -79,7 +80,7 @@ public class UserController {
             return null;
         }
 
-//        confirmCodeRepository.delete(confirmCode);
+        confirmCodeRepository.delete(confirmCode);
 
         User user = userRepository.findByEmail(confirmCode.getEmail());
         if(user == null){
