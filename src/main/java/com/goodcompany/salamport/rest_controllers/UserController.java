@@ -6,6 +6,7 @@ import com.goodcompany.salamport.repository.ConfirmCodeRepository;
 import com.goodcompany.salamport.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -85,6 +86,11 @@ public class UserController {
             return new User(confirmCode.getEmail());
         }
         return user;
+    }
+
+    @PostMapping("user/create")
+    public User userCreate(@RequestBody User user){
+        return userRepository.save(user);
     }
 
 }
