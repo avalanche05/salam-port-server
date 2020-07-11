@@ -24,6 +24,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
@@ -142,6 +143,11 @@ public class UserController {
         Resource file = storageService.load(filename);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
+    @PostMapping("/user/all")
+    public ArrayList<User> allUser(){
+        return (ArrayList<User>) userRepository.findAll();
     }
 
 
