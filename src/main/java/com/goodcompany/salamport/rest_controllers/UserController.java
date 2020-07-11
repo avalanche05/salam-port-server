@@ -110,16 +110,16 @@ public class UserController {
     }
 
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<ResponseMessage> uploadFile(@RequestPart MultipartFile file,@RequestPart("description") RequestBody description) {
         String message = "";
         try {
             storageService.save(file);
 
             message = "Uploaded the file successfully: " + file.getOriginalFilename();
-            return message;
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } catch (Exception e) {
             message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-            return message;
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
         }
     }
 
