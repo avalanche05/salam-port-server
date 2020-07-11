@@ -110,7 +110,7 @@ public class UserController {
     }
 
     @PostMapping("/upload")
-    public String uploadFile(@RequestPart("file") MultipartFile file) {
+    public String uploadFile(@RequestParam("file") MultipartFile file) {
         String message = "";
         try {
             storageService.save(file);
